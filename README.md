@@ -129,4 +129,4 @@ Jogo de corrida arcade em 3D no navegador inspirado no universo **Corrida Doce (
 
 ## 👤 Autoria
 
-Personalizado para **profdeborapaulo**.
+Personalizado por **profdeborapaulo**.
