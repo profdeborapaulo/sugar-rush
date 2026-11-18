@@ -4,6 +4,8 @@ import {
   createCheckeredGantryTexture,
   createCandyCaneStripeTexture,
   createPeppermintSwirlTexture,
+  createTrackBannerTexture,
+  createNameplateDecalTexture,
 } from './ProceduralTextures.js';
 
 export const sharedUnderTrackUniforms = {
@@ -142,9 +144,9 @@ export function buildCoasterTrack(splineData) {
   const candyRoadTex = createCandyRoadTexture();
   candyRoadTex.repeat.set(1, 1); // Scaled via vCoord per cross-section below
   const gantryTex = createCheckeredGantryTexture();
-  const candyCaneTex = createCandyCaneStripeTexture('#ff2e7a', '#fff9fc', '#6ef5c8');
+  const candyCaneTex = createCandyCaneStripeTexture('#ff1880', '#fff7fb', '#ff7ac8');
   candyCaneTex.repeat.set(1, 36);
-  const peppermintSwirlTex = createPeppermintSwirlTexture('#ff2e7a', '#ffffff', 10);
+  const peppermintSwirlTex = createPeppermintSwirlTexture('#ff1880', '#ffffff', 12);
 
   const arcLen = new Float32Array(N + 1);
   for (let i = 0; i < N; i++) {
@@ -230,9 +232,9 @@ export function buildCoasterTrack(splineData) {
   const curbColors = [];
   const curbIndices = [];
 
-  const pinkCurbColor = new THREE.Color(0xff3b9a);
-  const whiteCurbColor = new THREE.Color(0xfff9fc);
-  const mintRailColor = new THREE.Color(0x7af5d8);
+  const pinkCurbColor = new THREE.Color(0xff1880);
+  const whiteCurbColor = new THREE.Color(0xffcfe8);
+  const mintRailColor = new THREE.Color(0xff66c2);
 
   let cVertOffset = 0;
   for (let i = 0; i < N; i++) {
@@ -367,14 +369,14 @@ export function buildCoasterTrack(splineData) {
   }
 
   const frostedStrutMat = new THREE.MeshStandardMaterial({
-    color: 0xffeef8,
+    color: 0xffd6ec,
     roughness: 0.34,
     metalness: 0.04,
   });
   const pinkRingMat = new THREE.MeshStandardMaterial({
-    color: 0xff62b5,
-    roughness: 0.32,
-    metalness: 0.04,
+    color: 0xff1f8a,
+    roughness: 0.28,
+    metalness: 0.05,
   });
   const chocoFootpadMat = new THREE.MeshStandardMaterial({
     color: 0x5c2d1f,
@@ -474,8 +476,8 @@ export function buildCoasterTrack(splineData) {
   gantryGroup.position.set(0.0183, 0.035, 0.255);
 
   const gantryStickMat = new THREE.MeshStandardMaterial({
-    map: createCandyCaneStripeTexture('#ff2e7a', '#ffffff', '#ffe047'),
-    roughness: 0.24,
+    map: createCandyCaneStripeTexture('#ff1880', '#ffffff', '#ff70c8'),
+    roughness: 0.22,
   });
   const lollipopDiscMat = new THREE.MeshStandardMaterial({
     map: peppermintSwirlTex,
@@ -546,6 +548,205 @@ export function buildCoasterTrack(splineData) {
   gantryGroup.add(startStripe);
 
   trackGroup.add(gantryGroup);
+
+  // -------------------------------------------------------------------------
+  // 5B. "profdeborapaulo" TRACKSIDE CANDY BILLBOARDS, HALFWAY ARCH & ROAD DECAL
+  // -------------------------------------------------------------------------
+  const bannerGroup = new THREE.Group();
+  bannerGroup.name = 'ProfDeboraPauloTrackBanners';
+
+  const bannerPostMat = new THREE.MeshStandardMaterial({
+    map: createCandyCaneStripeTexture('#ff1880', '#ffffff', '#ff70c8'),
+    roughness: 0.24,
+  });
+  const bannerTextures = [
+    createTrackBannerTexture('profdeborapaulo', 'SUGAR RUSH · CORRIDA DOCE', 0),
+    createTrackBannerTexture('profdeborapaulo', 'PISTA DA VANELLOPE · TURBO', 1),
+    createTrackBannerTexture('profdeborapaulo', 'CANDY GRAND PRIX · ROSA', 2),
+  ];
+
+  // Trackside lollipop-mounted billboards placed cleanly outside the guardrail
+  const billboardSpots = [
+    { idx: 668, side: 1, variant: 0 },
+    { idx: 120, side: -1, variant: 1 },
+    { idx: 280, side: 1, variant: 2 },
+    { idx: 525, side: -1, variant: 0 },
+  ];
+
+  for (const spot of billboardSpots) {
+    const s = samples[spot.idx % N];
+    const p = new THREE.Vector3(...s.position);
+    const r = new THREE.Vector3(...s.right).normalize();
+    const n = new THREE.Vector3(...s.normal).normalize();
+    const t = new THREE.Vector3(...s.tangent).normalize();
+
+    const postBase = p
+      .clone()
+      .addScaledVector(r, spot.side * (halfWidth + curbWidth + 0.011));
+
+    const boardHolder = new THREE.Group();
+    boardHolder.position.copy(postBase);
+
+    const postMesh = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.0012, 0.0015, 0.017, 10),
+      bannerPostMat
+    );
+    postMesh.position.copy(n.clone().multiplyScalar(0.0075));
+    postMesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), n);
+    postMesh.castShadow = true;
+    boardHolder.add(postMesh);
+
+    const tex = bannerTextures[spot.variant % bannerTextures.length];
+    const faceMat = new THREE.MeshStandardMaterial({
+      map: tex,
+      emissiveMap: tex,
+      emissive: new THREE.Color(0xffffff),
+      emissiveIntensity: 0.48,
+      roughness: 0.22,
+      side: THREE.DoubleSide,
+    });
+    const boardW = 0.032;
+    const boardH = 0.010;
+    const signFrame = new THREE.Mesh(
+      new THREE.BoxGeometry(boardW + 0.0018, boardH + 0.0016, 0.0012),
+      pinkRingMat
+    );
+    const signFace = new THREE.Mesh(new THREE.PlaneGeometry(boardW, boardH), faceMat);
+    signFace.position.z = 0.0007;
+    const signBack = new THREE.Mesh(new THREE.PlaneGeometry(boardW, boardH), faceMat);
+    signBack.position.z = -0.0007;
+    signBack.rotation.y = Math.PI;
+
+    const signAssembly = new THREE.Group();
+    signAssembly.add(signFrame, signFace, signBack);
+    signAssembly.position.copy(n.clone().multiplyScalar(0.0165));
+
+    // Angle billboard toward oncoming driver (-tangent + slight inward angle toward track)
+    signAssembly.up.copy(n);
+    signAssembly.lookAt(
+      postBase
+        .clone()
+        .addScaledVector(n, 0.0165)
+        .addScaledVector(t, -0.08)
+        .addScaledVector(r, -spot.side * 0.035)
+    );
+
+    boardHolder.add(signAssembly);
+    bannerGroup.add(boardHolder);
+  }
+
+  // Overhead Halfway Candy Portal Arch with "profdeborapaulo" at sample 360
+  const archSample = samples[Math.min(360, N - 1)];
+  if (archSample) {
+    const ap = new THREE.Vector3(...archSample.position);
+    const ar = new THREE.Vector3(...archSample.right).normalize();
+    const an = new THREE.Vector3(...archSample.normal).normalize();
+    const at = new THREE.Vector3(...archSample.tangent).normalize();
+
+    const archHolder = new THREE.Group();
+    archHolder.position.copy(ap);
+    const basisMat = new THREE.Matrix4().makeBasis(ar, an, at);
+    archHolder.quaternion.setFromRotationMatrix(basisMat);
+
+    const spanHalf = halfWidth + curbWidth + 0.0045;
+    for (const sx of [-spanHalf, spanHalf]) {
+      const col = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.0014, 0.0017, 0.025, 12),
+        bannerPostMat
+      );
+      col.position.set(sx, 0.0125, 0);
+      col.castShadow = true;
+      archHolder.add(col);
+
+      const lolliTop = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.0045, 0.0045, 0.0016, 20),
+        lollipopDiscMat
+      );
+      lolliTop.rotation.x = Math.PI / 2;
+      lolliTop.position.set(sx, 0.0265, 0);
+      archHolder.add(lolliTop);
+    }
+
+    const archTex = bannerTextures[0];
+    const archFaceMat = new THREE.MeshStandardMaterial({
+      map: archTex,
+      emissiveMap: archTex,
+      emissive: new THREE.Color(0xffffff),
+      emissiveIntensity: 0.55,
+      roughness: 0.22,
+    });
+    const archBar = new THREE.Mesh(
+      new THREE.BoxGeometry(spanHalf * 2.08, 0.0085, 0.0024),
+      pinkRingMat
+    );
+    archBar.position.set(0, 0.0215, 0);
+    archHolder.add(archBar);
+
+    for (const [sz, ry] of [
+      [-0.0013, Math.PI],
+      [0.0013, 0],
+    ]) {
+      const f = new THREE.Mesh(new THREE.PlaneGeometry(spanHalf * 1.95, 0.0076), archFaceMat);
+      f.position.set(0, 0.0215, sz);
+      f.rotation.y = ry;
+      archHolder.add(f);
+    }
+    bannerGroup.add(archHolder);
+  }
+
+  // Painted Pink "profdeborapaulo" Roadway Strip right past Start/Finish (samples 654..660)
+  const decalTex = createNameplateDecalTexture('profdeborapaulo', {
+    bgTop: '#ff1f8a',
+    bgBottom: '#c20c68',
+    borderCol: '#ffffff',
+    outlineCol: '#380622',
+    accentCol: '#ff99d8',
+  });
+  const decalStart = 653;
+  const decalSteps = 8;
+  const dPos = [];
+  const dNorm = [];
+  const dUv = [];
+  const dIdx = [];
+  for (let k = 0; k <= decalSteps; k++) {
+    const s = samples[(decalStart + k) % N];
+    const p = new THREE.Vector3(...s.position);
+    const r = new THREE.Vector3(...s.right).normalize();
+    const n = new THREE.Vector3(...s.normal).normalize();
+    const halfDecalW = halfWidth * 0.78;
+    const pL = p.clone().addScaledVector(r, -halfDecalW).addScaledVector(n, 0.00024);
+    const pR = p.clone().addScaledVector(r, halfDecalW).addScaledVector(n, 0.00024);
+    dPos.push(pL.x, pL.y, pL.z, pR.x, pR.y, pR.z);
+    dNorm.push(n.x, n.y, n.z, n.x, n.y, n.z);
+    const v = k / decalSteps;
+    dUv.push(0, v, 1, v);
+    if (k < decalSteps) {
+      const b = k * 2;
+      dIdx.push(b, b + 1, b + 3, b, b + 3, b + 2);
+    }
+  }
+  const decalGeo = new THREE.BufferGeometry();
+  decalGeo.setAttribute('position', new THREE.Float32BufferAttribute(dPos, 3));
+  decalGeo.setAttribute('normal', new THREE.Float32BufferAttribute(dNorm, 3));
+  decalGeo.setAttribute('uv', new THREE.Float32BufferAttribute(dUv, 2));
+  decalGeo.setIndex(dIdx);
+  const decalMesh = new THREE.Mesh(
+    decalGeo,
+    new THREE.MeshStandardMaterial({
+      map: decalTex,
+      emissiveMap: decalTex,
+      emissive: new THREE.Color(0xffffff),
+      emissiveIntensity: 0.25,
+      roughness: 0.28,
+      polygonOffset: true,
+      polygonOffsetFactor: -2,
+      polygonOffsetUnits: -2,
+    })
+  );
+  decalMesh.receiveShadow = true;
+  bannerGroup.add(decalMesh);
+
+  trackGroup.add(bannerGroup);
 
   // -------------------------------------------------------------------------
   // 6. SUGAR RUSH COTTON-CANDY UNDER-TRACK NEON STRIPS & WAFER LIGHT FIELD
@@ -633,10 +834,10 @@ export function buildCoasterTrack(splineData) {
         float seg = p * 4.0;
         int idx = int(floor(seg));
         float f = smoothstep(0.0, 1.0, fract(seg));
-        vec3 cPink   = vec3(1.00, 0.18, 0.59); // Strawberry Pink (#ff2e97)
-        vec3 cMint   = vec3(0.43, 0.96, 0.78); // Vanellope Mint (#6ef5c8)
-        vec3 cLemon  = vec3(1.00, 0.88, 0.28); // Lemon Drop (#ffe047)
-        vec3 cGrape  = vec3(0.72, 0.30, 1.00); // Grape Taffy (#b84dff)
+        vec3 cPink   = vec3(1.00, 0.08, 0.54); // Hot Magenta Pink (#ff148a)
+        vec3 cMint   = vec3(1.00, 0.44, 0.78); // Bubblegum Pink (#ff70c7)
+        vec3 cLemon  = vec3(0.42, 0.98, 0.80); // Vanellope Mint (#6bfad0)
+        vec3 cGrape  = vec3(0.92, 0.18, 0.96); // Electric Orchid Pink (#eb2ef5)
         if (idx == 0) return mix(cPink, cMint, f);
         if (idx == 1) return mix(cMint, cLemon, f);
         if (idx == 2) return mix(cLemon, cGrape, f);
@@ -794,10 +995,10 @@ export function buildCoasterTrack(splineData) {
         float seg = p * 4.0;
         int idx = int(floor(seg));
         float f = smoothstep(0.0, 1.0, fract(seg));
-        vec3 cPink   = vec3(1.00, 0.18, 0.59);
-        vec3 cMint   = vec3(0.43, 0.96, 0.78);
-        vec3 cLemon  = vec3(1.00, 0.88, 0.28);
-        vec3 cGrape  = vec3(0.72, 0.30, 1.00);
+        vec3 cPink   = vec3(1.00, 0.08, 0.54);
+        vec3 cMint   = vec3(1.00, 0.44, 0.78);
+        vec3 cLemon  = vec3(0.42, 0.98, 0.80);
+        vec3 cGrape  = vec3(0.92, 0.18, 0.96);
         if (idx == 0) return mix(cPink, cMint, f);
         if (idx == 1) return mix(cMint, cLemon, f);
         if (idx == 2) return mix(cLemon, cGrape, f);

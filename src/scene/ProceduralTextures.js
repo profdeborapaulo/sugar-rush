@@ -108,28 +108,28 @@ export function createCandyRoadTexture() {
   }
 
   // Colorful sugar sprinkle crumbs embedded along the shoulders
-  const sprinkleCols = ['#ff5cb3', '#5cf7d0', '#ffe35c', '#69d2ff', '#ffffff'];
-  for (let i = 0; i < 420; i++) {
+  const sprinkleCols = ['#ff248f', '#ff70c8', '#6ef5c8', '#ffe35c', '#ffffff'];
+  for (let i = 0; i < 480; i++) {
     const sx = (i * 53) % w;
     const sy = (i * 197) % h;
-    if (sx > 36 && sx < w - 36 && i % 3 !== 0) continue;
+    if (sx > 38 && sx < w - 38 && i % 3 !== 0) continue;
     ctx.fillStyle = sprinkleCols[i % sprinkleCols.length];
     ctx.save();
     ctx.translate(sx, sy);
     ctx.rotate((i % 7) * 0.45);
-    ctx.fillRect(-3, -1.2, 6, 2.4);
+    ctx.fillRect(-3, -1.3, 6, 2.6);
     ctx.restore();
   }
 
-  // Strawberry-pink & mint-aqua piped frosting edge lines
-  ctx.fillStyle = '#ff4da6';
-  ctx.fillRect(10, 0, 7, h);
-  ctx.fillStyle = '#6ef5c8';
-  ctx.fillRect(w - 17, 0, 7, h);
+  // Vivid hot-pink & bubblegum-rose piped frosting edge lines
+  ctx.fillStyle = '#ff1f8a';
+  ctx.fillRect(10, 0, 8, h);
+  ctx.fillStyle = '#ff7ad0';
+  ctx.fillRect(w - 18, 0, 8, h);
 
-  // Crisp marshmallow-white & lemon-sugar dashed centerline
+  // Crisp marshmallow-white & pastel-pink dashed centerline
   for (let y = 0; y < h; y += 64) {
-    ctx.fillStyle = (y / 64) % 2 === 0 ? '#fff7fc' : '#ffe866';
+    ctx.fillStyle = (y / 64) % 2 === 0 ? '#fff5fb' : '#ff85d0';
     ctx.fillRect(w / 2 - 4, y + 10, 8, 34);
   }
 
@@ -393,17 +393,17 @@ export function createMonitorScreenTexture() {
   canvas.height = h;
   const ctx = canvas.getContext('2d');
 
-  // Vibrant Sugar Rush arcade sky & cotton candy gradient
+  // Vibrant Sugar Rush arcade sky & vivid pink cotton candy gradient
   const bg = ctx.createLinearGradient(0, 0, w, h);
-  bg.addColorStop(0.0, '#ff48a5');
-  bg.addColorStop(0.42, '#9b3bff');
-  bg.addColorStop(0.85, '#2bd8ff');
-  bg.addColorStop(1.0, '#6ef5c8');
+  bg.addColorStop(0.0, '#ff1e8a');
+  bg.addColorStop(0.38, '#ff5ec4');
+  bg.addColorStop(0.76, '#c23bff');
+  bg.addColorStop(1.0, '#ff88d6');
   ctx.fillStyle = bg;
   ctx.fillRect(0, 0, w, h);
 
   // Diagonal candy stripe overlay
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.10)';
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.14)';
   for (let x = -h; x < w + h; x += 64) {
     ctx.beginPath();
     ctx.moveTo(x, 0);
@@ -415,7 +415,7 @@ export function createMonitorScreenTexture() {
   }
 
   // Main Arcade Sign Panel
-  ctx.fillStyle = 'rgba(42, 10, 48, 0.84)';
+  ctx.fillStyle = 'rgba(54, 8, 48, 0.86)';
   ctx.strokeStyle = '#fff5fa';
   ctx.lineWidth = 8;
   ctx.beginPath();
@@ -423,7 +423,7 @@ export function createMonitorScreenTexture() {
   ctx.fill();
   ctx.stroke();
 
-  ctx.strokeStyle = '#6ef5c8';
+  ctx.strokeStyle = '#ff6ec7';
   ctx.lineWidth = 4;
   ctx.beginPath();
   ctx.roundRect(72, 64, w - 144, h - 128, 26);
@@ -436,9 +436,9 @@ export function createMonitorScreenTexture() {
   ctx.strokeStyle = '#3b0729';
   ctx.strokeText('SUGAR RUSH', w / 2, 174);
   const titleGrad = ctx.createLinearGradient(0, 110, 0, 190);
-  titleGrad.addColorStop(0, '#fff7b2');
-  titleGrad.addColorStop(0.5, '#ff77c8');
-  titleGrad.addColorStop(1, '#6ef5c8');
+  titleGrad.addColorStop(0, '#ffffff');
+  titleGrad.addColorStop(0.45, '#ff80cf');
+  titleGrad.addColorStop(1, '#ff248f');
   ctx.fillStyle = titleGrad;
   ctx.fillText('SUGAR RUSH', w / 2, 174);
 
@@ -447,23 +447,27 @@ export function createMonitorScreenTexture() {
   ctx.fillText('CORRIDA DOCE · CANDY GRAND PRIX', w / 2, 238);
 
   // Driver Banner
-  ctx.fillStyle = '#ff48a5';
+  const pillGrad = ctx.createLinearGradient(180, 286, w - 180, 374);
+  pillGrad.addColorStop(0, '#ff1a85');
+  pillGrad.addColorStop(0.5, '#ff5ec4');
+  pillGrad.addColorStop(1, '#ff1a85');
+  ctx.fillStyle = pillGrad;
   ctx.beginPath();
-  ctx.roundRect(180, 286, w - 360, 88, 24);
+  ctx.roundRect(156, 286, w - 312, 88, 24);
   ctx.fill();
-  ctx.strokeStyle = '#6ef5c8';
+  ctx.strokeStyle = '#ffffff';
   ctx.lineWidth = 4;
   ctx.stroke();
 
   ctx.fillStyle = '#ffffff';
-  ctx.font = '900 42px "Inter", sans-serif';
-  ctx.fillText('RACER: profdeborapaulo', w / 2, 344);
+  ctx.font = '900 44px "Inter", sans-serif';
+  ctx.fillText('profdeborapaulo', w / 2, 344);
 
   // Footer Candy Sectors
-  ctx.fillStyle = '#a8ffe2';
+  ctx.fillStyle = '#ffb8e8';
   ctx.font = '700 22px monospace';
   ctx.fillText('WAFER CASTLE • GUMMY TOWER • LOLLIPOP VALLEY • COLA VOLCANO', w / 2, 434);
-  ctx.fillStyle = '#ffd6ec';
+  ctx.fillStyle = '#a8ffe2';
   ctx.font = '700 20px monospace';
   ctx.fillText('COLLECT STAR CANDIES (+50 PTS) • PRESS SPACE FOR NITRO TURBO!', w / 2, 472);
 
@@ -474,49 +478,135 @@ export function createMonitorScreenTexture() {
 }
 
 export function createCheckeredGantryTexture() {
-  const w = 512;
-  const h = 128;
+  const w = 1024;
+  const h = 256;
   const canvas = document.createElement('canvas');
   canvas.width = w;
   canvas.height = h;
   const ctx = canvas.getContext('2d');
 
-  // Strawberry-pink & chocolate background
+  // Vivid hot-pink & bubblegum gradient background
   const bg = ctx.createLinearGradient(0, 0, w, 0);
-  bg.addColorStop(0, '#ff3b9a');
-  bg.addColorStop(0.5, '#ff6bbf');
-  bg.addColorStop(1, '#ff3b9a');
+  bg.addColorStop(0, '#ff1a85');
+  bg.addColorStop(0.5, '#ff6ec7');
+  bg.addColorStop(1, '#ff1a85');
   ctx.fillStyle = bg;
   ctx.fillRect(0, 0, w, h);
 
   // Pink & white candy checkered strips on left and right
-  const sq = 16;
+  const sq = 32;
   for (let r = 0; r < h / sq; r++) {
     for (let c = 0; c < 5; c++) {
-      ctx.fillStyle = (r + c) % 2 === 0 ? '#ffffff' : '#4a1b2e';
+      ctx.fillStyle = (r + c) % 2 === 0 ? '#ffffff' : '#5e0f3e';
       ctx.fillRect(c * sq, r * sq, sq, sq);
       ctx.fillRect(w - (c + 1) * sq, r * sq, sq, sq);
     }
   }
 
-  // Center banner text
+  // Center banner text featuring profdeborapaulo
   ctx.textAlign = 'center';
-  ctx.lineWidth = 6;
-  ctx.strokeStyle = '#3b0924';
-  ctx.font = '900 28px "Orbitron", sans-serif';
-  ctx.strokeText('SUGAR RUSH • LARGADA', w / 2, 56);
-  ctx.fillStyle = '#fff5b8';
-  ctx.fillText('SUGAR RUSH • LARGADA', w / 2, 56);
+  ctx.lineJoin = 'round';
+  ctx.lineWidth = 12;
+  ctx.strokeStyle = '#3b0724';
+  ctx.font = '900 58px "Orbitron", sans-serif';
+  ctx.strokeText('SUGAR RUSH · profdeborapaulo', w / 2, 108);
+  ctx.fillStyle = '#ffffff';
+  ctx.fillText('SUGAR RUSH · profdeborapaulo', w / 2, 108);
 
-  ctx.fillStyle = '#6ef5c8';
-  ctx.font = 'bold 17px monospace';
-  ctx.strokeStyle = '#240516';
-  ctx.lineWidth = 4;
-  ctx.strokeText('CORRIDA DOCE • 3 VOLTAS', w / 2, 92);
-  ctx.fillText('CORRIDA DOCE • 3 VOLTAS', w / 2, 92);
+  ctx.font = '900 34px "Orbitron", sans-serif';
+  ctx.strokeStyle = '#2a051a';
+  ctx.lineWidth = 8;
+  ctx.strokeText('CORRIDA DOCE · LARGADA · 3 VOLTAS', w / 2, 184);
+  ctx.fillStyle = '#ffe866';
+  ctx.fillText('CORRIDA DOCE · LARGADA · 3 VOLTAS', w / 2, 184);
 
   const tex = new THREE.CanvasTexture(canvas);
   tex.colorSpace = THREE.SRGBColorSpace;
-  tex.anisotropy = 8;
+  tex.anisotropy = 16;
+  return tex;
+}
+
+export function createTrackBannerTexture(
+  nameText = 'profdeborapaulo',
+  subtitleText = 'SUGAR RUSH · CORRIDA DOCE',
+  variant = 0
+) {
+  const w = 1024;
+  const h = 320;
+  const canvas = document.createElement('canvas');
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext('2d');
+
+  const palettes = [
+    { top: '#ff1488', bot: '#b80d65', trim: '#ffffff', sub: '#ffe866', accent: '#6ef5c8' },
+    { top: '#ff5ec4', bot: '#d91b7c', trim: '#fff5fb', sub: '#a8ffe2', accent: '#ffe34d' },
+    { top: '#d61c88', bot: '#5c0b46', trim: '#ff9ce0', sub: '#ffffff', accent: '#ff4db8' },
+  ];
+  const pal = palettes[variant % palettes.length];
+
+  const bg = ctx.createLinearGradient(0, 0, w, h);
+  bg.addColorStop(0.0, pal.top);
+  bg.addColorStop(1.0, pal.bot);
+  ctx.fillStyle = bg;
+  ctx.beginPath();
+  ctx.roundRect(12, 12, w - 24, h - 24, 38);
+  ctx.fill();
+
+  // Candy diagonal gloss stripes
+  ctx.save();
+  ctx.beginPath();
+  ctx.roundRect(12, 12, w - 24, h - 24, 38);
+  ctx.clip();
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.14)';
+  for (let x = -h; x < w + h; x += 88) {
+    ctx.beginPath();
+    ctx.moveTo(x, 0);
+    ctx.lineTo(x + 34, 0);
+    ctx.lineTo(x - h + 34, h);
+    ctx.lineTo(x - h, h);
+    ctx.closePath();
+    ctx.fill();
+  }
+  ctx.restore();
+
+  // Outer frosting border
+  ctx.lineWidth = 14;
+  ctx.strokeStyle = pal.trim;
+  ctx.beginPath();
+  ctx.roundRect(16, 16, w - 32, h - 32, 34);
+  ctx.stroke();
+
+  ctx.lineWidth = 5;
+  ctx.strokeStyle = pal.accent;
+  ctx.beginPath();
+  ctx.roundRect(30, 30, w - 60, h - 60, 24);
+  ctx.stroke();
+
+  // Subtitle on top
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.lineJoin = 'round';
+  ctx.font = '800 34px "Orbitron", sans-serif';
+  ctx.lineWidth = 8;
+  ctx.strokeStyle = '#330622';
+  ctx.strokeText(subtitleText, w / 2, 86);
+  ctx.fillStyle = pal.sub;
+  ctx.fillText(subtitleText, w / 2, 86);
+
+  // Main giant name: profdeborapaulo
+  ctx.font = '900 88px "Inter", "Orbitron", sans-serif';
+  ctx.lineWidth = 16;
+  ctx.strokeStyle = '#2d041d';
+  ctx.strokeText(nameText, w / 2, 198);
+  ctx.lineWidth = 5;
+  ctx.strokeStyle = pal.accent;
+  ctx.strokeText(nameText, w / 2, 198);
+  ctx.fillStyle = '#ffffff';
+  ctx.fillText(nameText, w / 2, 198);
+
+  const tex = new THREE.CanvasTexture(canvas);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tex.anisotropy = 16;
   return tex;
 }

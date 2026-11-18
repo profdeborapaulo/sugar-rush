@@ -5,6 +5,7 @@ import {
   createPeppermintSwirlTexture,
   createCandyCaneStripeTexture,
   createMonitorScreenTexture,
+  createTrackBannerTexture,
 } from './ProceduralTextures.js';
 
 export function createNightWindowTexture() {
@@ -36,20 +37,26 @@ export function buildProceduralDeskDiorama(_manifest = {}) {
   root.name = 'SugarRushCircuitDiorama';
 
   const { colorTex: waferColorTex, bumpTex: waferBumpTex } = createWaferGroundTextures();
-  const pinkFrostingTex = createFrostingSprinkleTexture('#ff59ad', '#ffa6d4', [
+  const pinkFrostingTex = createFrostingSprinkleTexture('#ff1e8a', '#ff7ac8', [
     '#ffffff',
+    '#ffb8e6',
     '#6ef5c8',
     '#ffe34d',
-    '#56c8ff',
+  ]);
+  const bubblegumFrostingTex = createFrostingSprinkleTexture('#ff70c8', '#ffc4ea', [
+    '#ff1488',
+    '#ffffff',
+    '#ffe34d',
+    '#6ef5c8',
   ]);
   const mintFrostingTex = createFrostingSprinkleTexture('#6ef5c8', '#c4ffec', [
-    '#ff3b9a',
+    '#ff1e8a',
     '#ffe34d',
     '#ffffff',
-    '#ff7b3b',
+    '#ff70c8',
   ]);
-  const peppermintTex = createPeppermintSwirlTexture('#ff2970', '#ffffff', 12);
-  const candyCaneTex = createCandyCaneStripeTexture('#ff2e7a', '#fff9fc', '#6ef5c8');
+  const peppermintTex = createPeppermintSwirlTexture('#ff1880', '#ffffff', 12);
+  const candyCaneTex = createCandyCaneStripeTexture('#ff1880', '#fff9fc', '#ff7ac8');
   candyCaneTex.repeat.set(1, 5);
   const arcadeScreenTex = createMonitorScreenTexture();
 
@@ -63,10 +70,18 @@ export function buildProceduralDeskDiorama(_manifest = {}) {
 
   const pinkIcingMat = new THREE.MeshPhysicalMaterial({
     map: pinkFrostingTex,
-    roughness: 0.24,
+    roughness: 0.22,
     metalness: 0.04,
-    clearcoat: 0.85,
-    clearcoatRoughness: 0.15,
+    clearcoat: 0.9,
+    clearcoatRoughness: 0.12,
+  });
+
+  const bubblegumIcingMat = new THREE.MeshPhysicalMaterial({
+    map: bubblegumFrostingTex,
+    roughness: 0.22,
+    metalness: 0.04,
+    clearcoat: 0.9,
+    clearcoatRoughness: 0.12,
   });
 
   const mintIcingMat = new THREE.MeshPhysicalMaterial({
@@ -118,12 +133,12 @@ export function buildProceduralDeskDiorama(_manifest = {}) {
   boardMesh.name = 'WaferCircuitBoard';
   root.add(boardMesh);
 
-  // Piped Strawberry-Pink & Mint Frosting Perimeter Trim around Wafer Edge
+  // Piped Hot-Pink & Bubblegum-Pink Frosting Perimeter Trim around Wafer Edge
   const edgeBars = [
     { pos: [0, -0.003, -0.304], size: [1.116, 0.012, 0.012], mat: pinkIcingMat },
     { pos: [0, -0.003, 0.304], size: [1.116, 0.012, 0.012], mat: pinkIcingMat },
-    { pos: [-0.554, -0.003, 0], size: [0.012, 0.012, 0.616], mat: mintIcingMat },
-    { pos: [0.554, -0.003, 0], size: [0.012, 0.012, 0.616], mat: mintIcingMat },
+    { pos: [-0.554, -0.003, 0], size: [0.012, 0.012, 0.616], mat: bubblegumIcingMat },
+    { pos: [0.554, -0.003, 0], size: [0.012, 0.012, 0.616], mat: bubblegumIcingMat },
   ];
   for (const eb of edgeBars) {
     const m = new THREE.Mesh(new THREE.BoxGeometry(...eb.size), eb.mat);
@@ -139,11 +154,11 @@ export function buildProceduralDeskDiorama(_manifest = {}) {
     roughness: 0.25,
   });
   const sprinkleColors = [
-    new THREE.Color(0xff3b9a),
+    new THREE.Color(0xff1488),
+    new THREE.Color(0xff6ec4),
+    new THREE.Color(0xffb8e6),
     new THREE.Color(0x6ef5c8),
     new THREE.Color(0xffe047),
-    new THREE.Color(0x52c8ff),
-    new THREE.Color(0xb84dff),
   ];
   const sprinkleInstanced = new THREE.InstancedMesh(sprinkleGeo, sprinkleMat, 120);
   const dummy = new THREE.Object3D();
@@ -179,10 +194,10 @@ export function buildProceduralDeskDiorama(_manifest = {}) {
   cakeTier1.receiveShadow = true;
   cakeGroup.add(cakeTier1);
 
-  // Middle Mint Frosting Cake Tier
+  // Middle Bubblegum-Pink Frosting Cake Tier
   const cakeTier2 = new THREE.Mesh(
     new THREE.BoxGeometry(0.27, 0.064, 0.23),
-    mintIcingMat
+    bubblegumIcingMat
   );
   cakeTier2.position.y = 0.106;
   cakeTier2.castShadow = true;
@@ -223,6 +238,21 @@ export function buildProceduralDeskDiorama(_manifest = {}) {
   turretRoof.position.set(-0.125, 0.181, -0.105);
   turretRoof.castShadow = true;
   cakeGroup.add(turretRoof);
+
+  // Prominent "profdeborapaulo" Candy Banner on Front Side of Wafer Cake Platform
+  const cakeBannerTex = createTrackBannerTexture('profdeborapaulo', 'CASTELO DOCE', 0);
+  const cakeBannerMesh = new THREE.Mesh(
+    new THREE.PlaneGeometry(0.21, 0.052),
+    new THREE.MeshStandardMaterial({
+      map: cakeBannerTex,
+      emissiveMap: cakeBannerTex,
+      emissive: new THREE.Color(0xffffff),
+      emissiveIntensity: 0.35,
+      roughness: 0.24,
+    })
+  );
+  cakeBannerMesh.position.set(0, 0.095, 0.1165);
+  cakeGroup.add(cakeBannerMesh);
 
   root.add(cakeGroup);
 
@@ -455,11 +485,11 @@ export function buildProceduralDeskDiorama(_manifest = {}) {
   const rows = 5;
   const macaronInstanced = new THREE.InstancedMesh(candySquareGeo, candySquareMat, cols * rows);
   const pastelPalette = [
-    new THREE.Color(0xff80c4),
+    new THREE.Color(0xff1e8a),
+    new THREE.Color(0xff6ec4),
+    new THREE.Color(0xffa8df),
     new THREE.Color(0x80f5d0),
     new THREE.Color(0xffe878),
-    new THREE.Color(0x90d8ff),
-    new THREE.Color(0xd296ff),
   ];
   let mIdx = 0;
   for (let r = 0; r < rows; r++) {
@@ -545,9 +575,9 @@ export function buildProceduralDeskDiorama(_manifest = {}) {
   const padHw = 0.1704;
   const padHd = 0.1329;
   const glowBorderMat = new THREE.MeshBasicMaterial({
-    color: 0xff62c2,
+    color: 0xff1e8a,
     transparent: true,
-    opacity: 0.72,
+    opacity: 0.82,
     blending: THREE.AdditiveBlending,
     depthWrite: false,
     toneMapped: false,

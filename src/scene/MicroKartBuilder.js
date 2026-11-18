@@ -31,29 +31,29 @@ export function buildMicroKart() {
     '#ff5938',
     '#48b8ff',
   ]);
-  const pinkSprinkleTex = createFrostingSprinkleTexture('#ff4da6', '#ff99cc', [
+  const pinkSprinkleTex = createFrostingSprinkleTexture('#ff1a85', '#ff78c8', [
     '#ffffff',
+    '#ffb8e6',
     '#6ef5c8',
     '#ffe34d',
-    '#8ceeff',
   ]);
-  const peppermintWheelTex = createPeppermintSwirlTexture('#ff2970', '#ffffff', 10);
-  const candyCaneTex = createCandyCaneStripeTexture('#ff2e7a', '#fff8fc', '#6ef5c8');
+  const peppermintWheelTex = createPeppermintSwirlTexture('#ff1480', '#ffffff', 10);
+  const candyCaneTex = createCandyCaneStripeTexture('#ff1880', '#fff8fc', '#ff7ac8');
   candyCaneTex.repeat.set(1, 3);
 
   const nameplateTex = createNameplateDecalTexture('profdeborapaulo', {
-    bgTop: '#ff4da6',
-    bgBottom: '#c2186e',
+    bgTop: '#ff1a85',
+    bgBottom: '#b80a62',
     borderCol: '#ffffff',
     outlineCol: '#380923',
-    accentCol: '#6ef5c8',
+    accentCol: '#ff9ce0',
   });
   const hoodNameplateTex = createNameplateDecalTexture('profdeborapaulo', {
-    bgTop: '#6ef5c8',
-    bgBottom: '#2bc496',
+    bgTop: '#ff66c4',
+    bgBottom: '#d91679',
     borderCol: '#ffffff',
-    outlineCol: '#1b0726',
-    accentCol: '#ff4da6',
+    outlineCol: '#2e0622',
+    accentCol: '#6ef5c8',
   });
 
   // Vanellope Mint Frosting Chassis

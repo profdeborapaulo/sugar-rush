@@ -40,10 +40,10 @@ export function buildRoomEnvironment(scene, settings = {}) {
     depthWrite: false,
     fog: false,
     uniforms: {
-      uZenithCol: { value: new THREE.Color(0x78dcff) },
-      uMidCol: { value: new THREE.Color(0xffc6ec) },
-      uHorizonCol: { value: new THREE.Color(0xfff1dc) },
-      uGroundCol: { value: new THREE.Color(0xffb5dd) },
+      uZenithCol: { value: new THREE.Color(0x70d2ff) },
+      uMidCol: { value: new THREE.Color(0xff8ed6) },
+      uHorizonCol: { value: new THREE.Color(0xffcae9) },
+      uGroundCol: { value: new THREE.Color(0xff5eb8) },
     },
     vertexShader: /* glsl */ `
       varying vec3 vDir;
@@ -76,12 +76,13 @@ export function buildRoomEnvironment(scene, settings = {}) {
   proceduralRoomGroup.add(skyDome);
 
   // -------------------------------------------------------------------------
-  // 2. ROLLING MINT & STRAWBERRY FROSTING HILLS GROUND (Y = -0.73)
+  // 2. ROLLING COTTON-CANDY PINK & BUBBLEGUM FROSTING HILLS GROUND (Y = -0.73)
   // -------------------------------------------------------------------------
-  const mintTerrainTex = createFrostingSprinkleTexture('#98f7d8', '#d4ffef', [
-    '#ff5cb3',
-    '#ffe34d',
+  const mintTerrainTex = createFrostingSprinkleTexture('#ff7ec9', '#ffc2e8', [
+    '#ff1488',
     '#ffffff',
+    '#6ef5c8',
+    '#ffe34d',
   ]);
   mintTerrainTex.repeat.set(6, 6);
 
@@ -141,7 +142,7 @@ export function buildRoomEnvironment(scene, settings = {}) {
     roughness: 0.68,
     metalness: 0.02,
   });
-  const candyCaneTex = createCandyCaneStripeTexture('#ff3b9a', '#ffffff', '#6ef5c8');
+  const candyCaneTex = createCandyCaneStripeTexture('#ff1880', '#ffffff', '#ff7ac8');
   candyCaneTex.repeat.set(1, 10);
   const candyCaneMat = new THREE.MeshStandardMaterial({
     map: candyCaneTex,
@@ -174,30 +175,34 @@ export function buildRoomEnvironment(scene, settings = {}) {
   // 4. DISTANT SUGAR RUSH CANDY LANDMARKS (Ice Cream Mountains, Lollipops, Clouds)
   // -------------------------------------------------------------------------
   const pinkFrostingMat = new THREE.MeshStandardMaterial({
-    map: createFrostingSprinkleTexture('#ff62b5', '#ffb0db', ['#ffffff', '#ffe34d', '#6ef5c8']),
-    roughness: 0.45,
+    map: createFrostingSprinkleTexture('#ff248f', '#ff80ca', ['#ffffff', '#ffe34d', '#6ef5c8']),
+    roughness: 0.42,
+  });
+  const bubblegumFrostingMat = new THREE.MeshStandardMaterial({
+    map: createFrostingSprinkleTexture('#ff70c8', '#ffc4ea', ['#ff1488', '#ffffff', '#6ef5c8']),
+    roughness: 0.42,
   });
   const lemonIcingMat = new THREE.MeshStandardMaterial({
-    color: 0xffe670,
+    color: 0xffa6dc,
     roughness: 0.42,
   });
   const marshmallowMat = new THREE.MeshStandardMaterial({
-    color: 0xfff8fc,
-    roughness: 0.48,
+    color: 0xffeef8,
+    roughness: 0.46,
   });
-  const peppermintTex = createPeppermintSwirlTexture('#ff2970', '#ffffff', 10);
+  const peppermintTex = createPeppermintSwirlTexture('#ff1880', '#ffffff', 12);
   const peppermintMat = new THREE.MeshStandardMaterial({
     map: peppermintTex,
-    roughness: 0.22,
+    roughness: 0.20,
   });
 
   // Distant Ice-Cream Cone Mountains around the horizon (r ~ 2.4m .. 3.8m)
   const mountainSpecs = [
     { x: -2.4, z: -2.2, r: 0.62, h: 1.55, capMat: pinkFrostingMat },
-    { x: 0.1, z: -2.9, r: 0.78, h: 1.85, capMat: marshmallowMat },
+    { x: 0.1, z: -2.9, r: 0.78, h: 1.85, capMat: bubblegumFrostingMat },
     { x: 2.5, z: -2.1, r: 0.66, h: 1.62, capMat: pinkFrostingMat },
     { x: -3.1, z: 0.4, r: 0.65, h: 1.48, capMat: lemonIcingMat },
-    { x: 3.1, z: 0.6, r: 0.68, h: 1.52, capMat: marshmallowMat },
+    { x: 3.1, z: 0.6, r: 0.68, h: 1.52, capMat: bubblegumFrostingMat },
     { x: -2.1, z: 2.7, r: 0.72, h: 1.68, capMat: pinkFrostingMat },
     { x: 2.2, z: 2.6, r: 0.70, h: 1.60, capMat: lemonIcingMat },
   ];

@@ -14,8 +14,8 @@ export function buildGoldenHourAtmosphere(scene) {
   const defaultSunScale = 1.35;
   const defaultLampScale = 1.0;
 
-  // Bright sky blue + cotton-candy pink ground bounce
-  const hemiLight = new THREE.HemisphereLight(0xd9f6ff, 0xffc6e5, 1.05);
+  // Bright sky tint + vivid cotton-candy pink ground bounce
+  const hemiLight = new THREE.HemisphereLight(0xffe6f7, 0xff8fd4, 1.12);
   atmosphereGroup.add(hemiLight);
 
   // Warm Golden Candy Sun Key Light
@@ -38,15 +38,15 @@ export function buildGoldenHourAtmosphere(scene) {
   atmosphereGroup.add(sunLight);
 
   // Soft Rear Cotton-Candy Fill
-  const windowGlowLight = new THREE.PointLight(0xffb8e6, 0.55, 2.4, 1.1);
+  const windowGlowLight = new THREE.PointLight(0xff7ec9, 0.64, 2.4, 1.1);
   windowGlowLight.position.set(0.0, 0.50, -0.45);
   atmosphereGroup.add(windowGlowLight);
 
-  const goldenFillLight = new THREE.DirectionalLight(0xb8f8ff, 0.52);
+  const goldenFillLight = new THREE.DirectionalLight(0xffd6f0, 0.56);
   goldenFillLight.position.set(0.55, 0.52, -0.35);
   atmosphereGroup.add(goldenFillLight);
 
-  const rimLight = new THREE.DirectionalLight(0xffd2f0, 0.42);
+  const rimLight = new THREE.DirectionalLight(0xff9ce0, 0.48);
   rimLight.position.set(-0.38, 0.48, -0.62);
   atmosphereGroup.add(rimLight);
   const roomFillLight = rimLight;
@@ -82,8 +82,8 @@ export function buildGoldenHourAtmosphere(scene) {
   lampGlowPoint.position.set(0.342, 0.345, -0.062);
   atmosphereGroup.add(lampGlowPoint);
 
-  // Subtle pastel mint-pink chocolate bridge accent glow
-  const kbBacklight = new THREE.PointLight(0xff77c8, 0.18, 0.22, 2.0);
+  // Vivid hot-pink chocolate bridge accent glow
+  const kbBacklight = new THREE.PointLight(0xff2496, 0.24, 0.24, 2.0);
   kbBacklight.position.set(-0.161, 0.025, 0.118);
   atmosphereGroup.add(kbBacklight);
 
@@ -184,11 +184,11 @@ export function buildGoldenHourAtmosphere(scene) {
         float d = length(uv);
         if (d > 0.5) discard;
         float bokeh = smoothstep(0.5, 0.08, d);
-        vec3 cPink = vec3(1.0, 0.58, 0.84);
-        vec3 cMint = vec3(0.55, 0.98, 0.85);
-        vec3 cLemon = vec3(1.0, 0.92, 0.55);
-        vec3 col = vHueSeed < 0.33 ? cPink : (vHueSeed < 0.66 ? cMint : cLemon);
-        float alpha = bokeh * vTwinkle * 0.35 * clamp(uIntensity, 0.0, 1.6);
+        vec3 cPink = vec3(1.0, 0.22, 0.68);
+        vec3 cBubble = vec3(1.0, 0.62, 0.88);
+        vec3 cMint = vec3(0.45, 0.98, 0.82);
+        vec3 col = vHueSeed < 0.42 ? cPink : (vHueSeed < 0.78 ? cBubble : cMint);
+        float alpha = bokeh * vTwinkle * 0.40 * clamp(uIntensity, 0.0, 1.6);
         gl_FragColor = vec4(col, alpha);
       }
     `,
@@ -200,8 +200,8 @@ export function buildGoldenHourAtmosphere(scene) {
 
   scene.add(atmosphereGroup);
 
-  const candySkyBg = new THREE.Color(0xffd6ee);
-  const candyFogColor = new THREE.Color(0xffe1f3);
+  const candySkyBg = new THREE.Color(0xffbae4);
+  const candyFogColor = new THREE.Color(0xffc9ea);
 
   let lastSunScale = -1;
   let lastLampScale = -1;

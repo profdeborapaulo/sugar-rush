@@ -1608,23 +1608,23 @@ async function initApp() {
   const speedoSegEls = [];
   const SPEEDO_SEG_COLORS = [
     '#ffffff',
-    '#ffffff',
-    '#ffffff',
-    '#ffffff',
-    '#ffffff',
-    '#f6feff',
-    '#e8fcff',
-    '#d4f9ff',
-    '#bcf5ff',
-    '#a0f1ff',
-    '#82ecff',
-    '#62e7ff',
-    '#44e3ff',
-    '#28dfff',
-    '#12dcff',
-    '#00d9ff',
-    '#00e4ff',
-    '#00f0ff',
+    '#fff5fb',
+    '#ffe8f5',
+    '#ffd8ef',
+    '#ffc4e6',
+    '#ffaddc',
+    '#ff96d2',
+    '#ff80c8',
+    '#ff6abe',
+    '#ff54b4',
+    '#ff40aa',
+    '#ff2ea0',
+    '#ff1e96',
+    '#ff148c',
+    '#ff0a82',
+    '#f50078',
+    '#ff2e97',
+    '#ff66c4',
   ];
 
   if (ticksGroup) {
@@ -1894,30 +1894,30 @@ async function initApp() {
     const ky = mapMinimapY(st.position.x, st.position.y, st.position.z);
 
     radarCtx.save();
-    // Cyan glowing dot for live track progress (scaled for 2x Retina canvas)
+    // Hot-pink glowing dot for live track progress (scaled for 2x Retina canvas)
     const haloGrad = radarCtx.createRadialGradient(kx, ky, 3.0, kx, ky, 26.0);
-    haloGrad.addColorStop(0.0, 'rgba(0, 240, 255, 0.90)');
-    haloGrad.addColorStop(0.45, 'rgba(0, 224, 255, 0.44)');
-    haloGrad.addColorStop(1.0, 'rgba(0, 210, 255, 0.0)');
+    haloGrad.addColorStop(0.0, 'rgba(255, 30, 138, 0.95)');
+    haloGrad.addColorStop(0.45, 'rgba(255, 102, 196, 0.52)');
+    haloGrad.addColorStop(1.0, 'rgba(255, 153, 221, 0.0)');
     radarCtx.fillStyle = haloGrad;
     radarCtx.beginPath();
     radarCtx.arc(kx, ky, 26.0, 0, Math.PI * 2);
     radarCtx.fill();
 
-    // Crisp dark ring around dot for contrast against thick white track
-    radarCtx.fillStyle = 'rgba(0, 12, 22, 0.55)';
+    // Crisp dark berry ring around dot for contrast against thick white track
+    radarCtx.fillStyle = 'rgba(42, 4, 28, 0.72)';
     radarCtx.beginPath();
     radarCtx.arc(kx, ky, 12.2, 0, Math.PI * 2);
     radarCtx.fill();
 
-    // Bright electric-cyan dot body
-    radarCtx.fillStyle = '#00e8ff';
+    // Bright hot-pink dot body
+    radarCtx.fillStyle = '#ff248f';
     radarCtx.beginPath();
     radarCtx.arc(kx, ky, 10.2, 0, Math.PI * 2);
     radarCtx.fill();
 
-    // Crisp ice-cyan center core
-    radarCtx.fillStyle = '#dcfdff';
+    // Crisp cotton-candy pink center core
+    radarCtx.fillStyle = '#ffd6ef';
     radarCtx.beginPath();
     radarCtx.arc(kx, ky, 4.8, 0, Math.PI * 2);
     radarCtx.fill();

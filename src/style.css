@@ -172,24 +172,45 @@ body {
 .hud-brand-title {
   pointer-events: auto;
   cursor: pointer;
-  font-family: 'Orbitron', sans-serif;
-  font-style: italic;
-  font-size: 39px;
-  font-weight: 900;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  background: linear-gradient(95deg, #ffffff 0%, #ff8cd2 52%, #6ef5c8 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 3px 12px rgba(42, 6, 30, 0.85))
-          drop-shadow(0 0 18px rgba(255, 77, 166, 0.45));
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1px;
   padding: 2px 4px;
   transition: filter 0.16s ease, transform 0.16s ease;
 }
 
+.hud-brand-main {
+  font-family: 'Orbitron', sans-serif;
+  font-style: italic;
+  font-size: 38px;
+  font-weight: 900;
+  line-height: 1.02;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  background: linear-gradient(95deg, #ffffff 0%, #ff99dd 48%, #ff1e8a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 3px 12px rgba(42, 6, 30, 0.9))
+          drop-shadow(0 0 18px rgba(255, 30, 138, 0.55));
+}
+
+.hud-brand-player {
+  font-family: 'Orbitron', sans-serif;
+  font-style: italic;
+  font-size: 13.5px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: none;
+  color: #ff99dd;
+  text-shadow:
+    0 0 12px rgba(255, 30, 138, 0.85),
+    0 2px 5px rgba(0, 0, 0, 0.96);
+}
+
 .hud-brand-title:hover {
   filter: drop-shadow(0 3px 14px rgba(0, 0, 0, 0.90))
-          drop-shadow(0 0 22px rgba(0, 229, 255, 0.55));
+          drop-shadow(0 0 24px rgba(255, 64, 168, 0.72));
   transform: scale(1.02);
 }
 
@@ -208,12 +229,12 @@ body {
   gap: 10px;
   padding: 5px 14px 5px 12px;
   transform: skewX(-12deg);
-  background: rgba(6, 10, 18, 0.78);
-  border: 1.5px solid rgba(255, 210, 125, 0.42);
+  background: rgba(34, 8, 28, 0.80);
+  border: 1.5px solid rgba(255, 92, 184, 0.62);
   border-radius: 6px;
   box-shadow:
     0 4px 12px rgba(0, 0, 0, 0.85),
-    0 0 16px rgba(0, 229, 255, 0.12);
+    0 0 16px rgba(255, 46, 151, 0.28);
 }
 
 .hud-score-widget.hidden {
@@ -226,7 +247,7 @@ body {
   font-size: 12px;
   font-weight: 800;
   letter-spacing: 0.10em;
-  color: #ffd27d;
+  color: #ff99dd;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.95);
 }
 
@@ -238,7 +259,7 @@ body {
   color: #ffffff;
   font-variant-numeric: tabular-nums;
   text-shadow:
-    0 0 12px rgba(0, 229, 255, 0.45),
+    0 0 12px rgba(255, 64, 168, 0.62),
     0 2px 6px rgba(0, 0, 0, 0.96);
 }
 
@@ -250,9 +271,9 @@ body {
   font-style: italic;
   font-size: 18px;
   font-weight: 900;
-  color: #00f0ff;
+  color: #ff66c4;
   text-shadow:
-    0 0 14px rgba(0, 240, 255, 0.92),
+    0 0 14px rgba(255, 46, 151, 0.95),
     0 2px 6px rgba(0, 0, 0, 0.98);
   animation: scorePopFloat 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
@@ -322,10 +343,10 @@ body {
 }
 
 .hud-mute-btn:hover {
-  border-color: #00e5ff;
-  color: #00e5ff;
+  border-color: #ff5ec4;
+  color: #ff5ec4;
   box-shadow:
-    0 0 14px rgba(0, 229, 255, 0.48),
+    0 0 14px rgba(255, 46, 151, 0.58),
     0 3px 10px rgba(0, 0, 0, 0.88);
 }
 
@@ -358,9 +379,9 @@ body {
 }
 
 .hud-lap-curr {
-  color: #00e5ff;
+  color: #ff66c4;
   text-shadow:
-    0 0 12px rgba(0, 229, 255, 0.65),
+    0 0 14px rgba(255, 46, 151, 0.78),
     0 2px 4px rgba(0, 0, 0, 0.96),
     0 4px 12px rgba(0, 0, 0, 0.88);
 }
@@ -403,12 +424,12 @@ body {
   font-size: 16px;
   font-weight: 800;
   letter-spacing: 0.05em;
-  color: #00e5ff;
+  color: #ff80cf;
   background: none !important;
   border: none !important;
   box-shadow: none !important;
   text-shadow:
-    0 0 12px rgba(0, 229, 255, 0.65),
+    0 0 14px rgba(255, 46, 151, 0.78),
     0 2px 4px rgba(0, 0, 0, 0.96),
     0 4px 12px rgba(0, 0, 0, 0.88);
   margin-top: 3px;
@@ -464,11 +485,11 @@ body {
   font-weight: 900;
   letter-spacing: 0.08em;
   margin: 0 0 6px;
-  background: linear-gradient(95deg, #ffffff 0%, #ffe3a8 55%, #ffaa44 100%);
+  background: linear-gradient(95deg, #ffffff 0%, #ff85d0 50%, #ff1e8a 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   filter: drop-shadow(0 3px 12px rgba(0, 0, 0, 0.92))
-          drop-shadow(0 0 22px rgba(255, 170, 68, 0.35));
+          drop-shadow(0 0 22px rgba(255, 46, 151, 0.52));
 }
 
 .hud-finish-time {
@@ -494,12 +515,12 @@ body {
   font-size: 13px;
   font-weight: 800;
   letter-spacing: 0.10em;
-  color: #00e5ff;
+  color: #ff85d0;
   background: none !important;
   border: none !important;
   box-shadow: none !important;
   text-shadow:
-    0 0 12px rgba(0, 229, 255, 0.65),
+    0 0 12px rgba(255, 46, 151, 0.72),
     0 2px 4px rgba(0, 0, 0, 0.96),
     0 4px 12px rgba(0, 0, 0, 0.88);
   margin-top: 6px;
@@ -588,13 +609,13 @@ body {
   position: relative;
   width: min(540px, 90vw);
   padding: 32px 36px 28px;
-  background: linear-gradient(160deg, rgba(28, 10, 32, 0.92) 0%, rgba(14, 6, 22, 0.96) 100%);
-  border: 1.5px solid rgba(255, 92, 179, 0.62);
+  background: linear-gradient(160deg, rgba(52, 12, 46, 0.92) 0%, rgba(24, 6, 28, 0.96) 100%);
+  border: 1.5px solid rgba(255, 64, 168, 0.78);
   border-radius: 14px;
   box-shadow:
     0 24px 64px rgba(0, 0, 0, 0.85),
-    0 0 36px rgba(255, 77, 166, 0.26),
-    inset 0 1px 0 rgba(255, 255, 255, 0.22);
+    0 0 42px rgba(255, 30, 138, 0.40),
+    inset 0 1px 0 rgba(255, 255, 255, 0.24);
   text-align: center;
   overflow: hidden;
 }
@@ -605,8 +626,8 @@ body {
   top: 0;
   left: 0;
   right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, #ff4da6 0%, #ffe35c 50%, #6ef5c8 100%);
+  height: 4px;
+  background: linear-gradient(90deg, #ff1488 0%, #ff85d0 45%, #ffe35c 75%, #6ef5c8 100%);
 }
 
 .welcome-eyebrow {
@@ -615,9 +636,9 @@ body {
   font-size: 12px;
   font-weight: 800;
   letter-spacing: 0.14em;
-  color: #6ef5c8;
+  color: #ff99dd;
   text-shadow:
-    0 0 12px rgba(110, 245, 200, 0.65),
+    0 0 12px rgba(255, 46, 151, 0.72),
     0 2px 4px rgba(0, 0, 0, 0.95);
   margin-bottom: 4px;
 }
@@ -629,12 +650,26 @@ body {
   font-weight: 900;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  background: linear-gradient(95deg, #ffffff 0%, #ff99d6 50%, #6ef5c8 100%);
+  background: linear-gradient(95deg, #ffffff 0%, #ff80cf 48%, #ff1e8a 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   filter: drop-shadow(0 3px 12px rgba(0, 0, 0, 0.90))
-          drop-shadow(0 0 18px rgba(255, 77, 166, 0.35));
-  margin-bottom: 24px;
+          drop-shadow(0 0 22px rgba(255, 30, 138, 0.55));
+  margin-bottom: 4px;
+}
+
+.welcome-racer-tag {
+  font-family: 'Orbitron', sans-serif;
+  font-style: italic;
+  font-size: 18px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: none;
+  color: #ffb8e8;
+  text-shadow:
+    0 0 16px rgba(255, 30, 138, 0.92),
+    0 2px 6px rgba(0, 0, 0, 0.95);
+  margin-bottom: 20px;
 }
 
 .welcome-controls-grid {
@@ -724,11 +759,11 @@ body {
   min-width: 30px;
   height: 26px;
   font-size: 13px;
-  border-color: rgba(0, 229, 255, 0.68);
-  color: #00e5ff;
+  border-color: rgba(255, 92, 184, 0.78);
+  color: #ff80cf;
   box-shadow:
     0 3px 8px rgba(0, 0, 0, 0.82),
-    0 0 10px rgba(0, 229, 255, 0.22);
+    0 0 12px rgba(255, 46, 151, 0.32);
 }
 
 .welcome-key-space {
@@ -767,16 +802,16 @@ body {
 }
 
 .cam-key-row:hover {
-  background: rgba(0, 229, 255, 0.10);
-  border-color: rgba(0, 229, 255, 0.42);
+  background: rgba(255, 46, 151, 0.16);
+  border-color: rgba(255, 102, 196, 0.56);
   color: #ffffff;
 }
 
 .cam-key-row.active {
-  background: linear-gradient(95deg, rgba(0, 229, 255, 0.20) 0%, rgba(255, 170, 68, 0.14) 100%);
-  border-color: rgba(0, 229, 255, 0.68);
+  background: linear-gradient(95deg, rgba(255, 30, 138, 0.28) 0%, rgba(255, 128, 207, 0.18) 100%);
+  border-color: rgba(255, 102, 196, 0.82);
   color: #ffffff;
-  text-shadow: 0 0 10px rgba(0, 229, 255, 0.55);
+  text-shadow: 0 0 10px rgba(255, 64, 168, 0.65);
 }
 
 .welcome-footer-row {
@@ -791,8 +826,8 @@ body {
   cursor: pointer;
   transform: skewX(-12deg);
   padding: 13px 34px;
-  background: linear-gradient(95deg, rgba(255, 77, 166, 0.36) 0%, rgba(110, 245, 200, 0.34) 100%);
-  border: 2px solid #ff66b8;
+  background: linear-gradient(95deg, rgba(255, 24, 136, 0.48) 0%, rgba(255, 102, 196, 0.40) 100%);
+  border: 2px solid #ff5ec4;
   border-radius: 8px;
   display: inline-flex;
   align-items: center;
@@ -800,16 +835,16 @@ body {
   gap: 14px;
   box-shadow:
     0 8px 24px rgba(0, 0, 0, 0.88),
-    0 0 22px rgba(255, 77, 166, 0.42);
+    0 0 26px rgba(255, 30, 138, 0.54);
   transition: all 0.16s ease;
 }
 
 .welcome-start-btn:hover {
-  background: linear-gradient(95deg, rgba(255, 77, 166, 0.52) 0%, rgba(110, 245, 200, 0.48) 100%);
+  background: linear-gradient(95deg, rgba(255, 30, 138, 0.68) 0%, rgba(255, 128, 207, 0.58) 100%);
   border-color: #ffffff;
   box-shadow:
     0 10px 28px rgba(0, 0, 0, 0.92),
-    0 0 30px rgba(110, 245, 200, 0.65);
+    0 0 34px rgba(255, 77, 166, 0.78);
   transform: skewX(-12deg) translateY(-1px) scale(1.02);
 }
 
@@ -987,12 +1022,12 @@ body {
   padding: 9px 14px 10px;
   margin-bottom: 6px;
   transform: skewX(-12deg);
-  background: rgba(6, 10, 18, 0.82);
-  border: 1.5px solid rgba(0, 229, 255, 0.36);
+  background: rgba(34, 8, 28, 0.84);
+  border: 1.5px solid rgba(255, 92, 184, 0.52);
   border-radius: 8px;
   box-shadow:
     0 8px 24px rgba(0, 0, 0, 0.88),
-    0 0 18px rgba(0, 229, 255, 0.14);
+    0 0 18px rgba(255, 46, 151, 0.24);
   transition: border-color 0.16s ease, box-shadow 0.16s ease, transform 0.12s ease;
 }
 
@@ -1001,18 +1036,18 @@ body {
 }
 
 .hud-nitro-widget.is-ready {
-  border-color: rgba(0, 232, 255, 0.78);
+  border-color: rgba(255, 92, 184, 0.90);
   box-shadow:
     0 8px 24px rgba(0, 0, 0, 0.88),
-    0 0 22px rgba(0, 232, 255, 0.32);
+    0 0 24px rgba(255, 46, 151, 0.48);
 }
 
 .hud-nitro-widget.is-boosting {
-  border-color: #ffd27d;
+  border-color: #ffb8e8;
   box-shadow:
     0 8px 28px rgba(0, 0, 0, 0.92),
-    0 0 28px rgba(0, 240, 255, 0.58),
-    0 0 18px rgba(255, 178, 76, 0.45);
+    0 0 30px rgba(255, 20, 136, 0.72),
+    0 0 18px rgba(255, 184, 232, 0.55);
 }
 
 .hud-nitro-widget.is-insufficient {
@@ -1048,14 +1083,14 @@ body {
   font-size: 12px;
   font-weight: 900;
   letter-spacing: 0.06em;
-  color: #00e5ff;
+  color: #ff80cf;
   font-variant-numeric: tabular-nums;
-  text-shadow: 0 0 10px rgba(0, 229, 255, 0.65);
+  text-shadow: 0 0 10px rgba(255, 46, 151, 0.75);
 }
 
 .hud-nitro-widget.is-boosting .nitro-status-value {
-  color: #ffd27d;
-  text-shadow: 0 0 12px rgba(255, 210, 125, 0.85);
+  color: #ffe35c;
+  text-shadow: 0 0 12px rgba(255, 227, 92, 0.85);
 }
 
 .nitro-controls-row {
@@ -1069,7 +1104,7 @@ body {
   flex: 1;
   height: 16px;
   background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 170, 220, 0.28);
   border-radius: 4px;
   overflow: hidden;
 }
@@ -1077,14 +1112,14 @@ body {
 .nitro-bar-fill {
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, #1e6bff 0%, #00e5ff 68%, #a6ffff 100%);
-  box-shadow: 0 0 12px rgba(0, 229, 255, 0.72);
+  background: linear-gradient(90deg, #ff1488 0%, #ff66c4 62%, #ffc4ea 100%);
+  box-shadow: 0 0 14px rgba(255, 46, 151, 0.82);
   transition: width 0.12s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .hud-nitro-widget.is-boosting .nitro-bar-fill {
-  background: linear-gradient(90deg, #ff9922 0%, #ffd27d 50%, #00f0ff 100%);
-  box-shadow: 0 0 16px rgba(255, 210, 125, 0.85);
+  background: linear-gradient(90deg, #ff007f 0%, #ff85d0 50%, #6ef5c8 100%);
+  box-shadow: 0 0 18px rgba(255, 64, 168, 0.9);
   transition: width 0.04s linear;
 }
 
@@ -1099,7 +1134,7 @@ body {
 .nitro-bar-dividers span {
   width: 2px;
   height: 100%;
-  background: rgba(6, 10, 18, 0.85);
+  background: rgba(28, 6, 22, 0.85);
 }
 
 .nitro-turbo-btn {
@@ -1111,31 +1146,31 @@ body {
   padding: 5px 10px;
   border-radius: 5px;
   background: rgba(255, 255, 255, 0.07);
-  border: 1.5px solid rgba(255, 255, 255, 0.24);
-  color: rgba(255, 255, 255, 0.56);
+  border: 1.5px solid rgba(255, 170, 220, 0.30);
+  color: rgba(255, 255, 255, 0.62);
   font-family: 'Orbitron', sans-serif;
   font-style: italic;
   transition: all 0.14s ease;
 }
 
 .nitro-turbo-btn.is-ready {
-  background: linear-gradient(95deg, rgba(0, 229, 255, 0.28) 0%, rgba(30, 107, 255, 0.32) 100%);
-  border-color: #00e5ff;
+  background: linear-gradient(95deg, rgba(255, 24, 136, 0.36) 0%, rgba(255, 102, 196, 0.34) 100%);
+  border-color: #ff66c4;
   color: #ffffff;
-  box-shadow: 0 0 14px rgba(0, 229, 255, 0.45);
+  box-shadow: 0 0 14px rgba(255, 46, 151, 0.52);
 }
 
 .nitro-turbo-btn.is-ready:hover {
-  background: linear-gradient(95deg, rgba(0, 229, 255, 0.48) 0%, rgba(255, 170, 68, 0.36) 100%);
+  background: linear-gradient(95deg, rgba(255, 24, 136, 0.56) 0%, rgba(255, 153, 221, 0.45) 100%);
   border-color: #ffffff;
-  box-shadow: 0 0 20px rgba(0, 229, 255, 0.72);
+  box-shadow: 0 0 22px rgba(255, 46, 151, 0.80);
 }
 
 .nitro-turbo-btn.is-boosting {
-  background: linear-gradient(95deg, rgba(255, 170, 68, 0.42) 0%, rgba(0, 229, 255, 0.40) 100%);
-  border-color: #ffd27d;
+  background: linear-gradient(95deg, rgba(255, 24, 136, 0.52) 0%, rgba(110, 245, 200, 0.38) 100%);
+  border-color: #ffe35c;
   color: #ffffff;
-  box-shadow: 0 0 18px rgba(255, 210, 125, 0.65);
+  box-shadow: 0 0 18px rgba(255, 92, 184, 0.72);
 }
 
 .nitro-btn-label {
@@ -1319,7 +1354,12 @@ body {
   .welcome-title {
     font-size: clamp(24px, 7vw, 31px);
     letter-spacing: 0.05em;
-    margin-bottom: 14px;
+    margin-bottom: 2px;
+  }
+
+  .welcome-racer-tag {
+    font-size: 13px;
+    margin-bottom: 12px;
   }
 
   .welcome-controls-grid {

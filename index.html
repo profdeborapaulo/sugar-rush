@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sugar Rush · Corrida Doce</title>
+    <title>Sugar Rush · profdeborapaulo</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -35,7 +35,7 @@
             role="button"
             tabindex="0"
             title="Click to open Controls &amp; Camera Menu"
-          >Sugar Rush</div>
+          ><span class="hud-brand-main">Sugar Rush</span><span class="hud-brand-player">profdeborapaulo</span></div>
 
           <div id="hud-score-widget" class="hud-score-widget" aria-live="polite">
             <span class="hud-score-label">SCORE</span>
@@ -83,8 +83,9 @@
       <!-- Welcome & Controls Dialog (Shown on Launch & When Clicking "Desk Racer") -->
       <div id="welcome-dialog-overlay" class="welcome-dialog-overlay">
         <div class="welcome-dialog-card" role="dialog" aria-labelledby="welcome-title">
-          <div class="welcome-eyebrow">CORRIDA DOCE · VANELLOPE · profdeborapaulo</div>
+          <div class="welcome-eyebrow">CORRIDA DOCE · VANELLOPE EDITION</div>
           <h1 id="welcome-title" class="welcome-title">SUGAR RUSH</h1>
+          <div class="welcome-racer-tag">profdeborapaulo</div>
 
           <div class="welcome-controls-grid">
             <!-- WASD Controls -->
@@ -148,7 +149,7 @@
 
       <div id="hud-finish-overlay" class="welcome-dialog-overlay hud-finish-overlay hidden" role="dialog" aria-labelledby="hud-finish-title">
         <div class="welcome-dialog-card finish-dialog-card">
-          <div class="welcome-eyebrow">CORRIDA DOCE · 3 VOLTAS COMPLETAS</div>
+          <div class="welcome-eyebrow">CORRIDA DOCE · profdeborapaulo · 3 VOLTAS</div>
           <h2 id="hud-finish-title" class="hud-finish-title">FINISH</h2>
           <div id="hud-finish-time" class="hud-finish-time">00:00.00</div>
           <div id="hud-finish-sub" class="hud-finish-sub">BEST LAP 00:00.00</div>
@@ -204,9 +205,9 @@
           <svg id="speedo-gauge-svg" viewBox="0 0 284 134" class="speedo-svg">
             <defs>
               <linearGradient id="speedoFrameStrokeGrad" x1="0%" y1="100%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="rgba(255, 255, 255, 0.35)" />
-                <stop offset="45%" stop-color="rgba(160, 240, 255, 0.55)" />
-                <stop offset="100%" stop-color="rgba(0, 232, 255, 0.92)" />
+                <stop offset="0%" stop-color="rgba(255, 210, 238, 0.45)" />
+                <stop offset="45%" stop-color="rgba(255, 112, 198, 0.72)" />
+                <stop offset="100%" stop-color="rgba(255, 24, 136, 0.96)" />
               </linearGradient>
               <filter id="speedoCyanGlow" x="-25%" y="-25%" width="150%" height="150%">
                 <feGaussianBlur stdDeviation="2.4" result="blur" />
