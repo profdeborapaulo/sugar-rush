@@ -55,6 +55,21 @@
               <div id="hud-lap-split" class="hud-lap-split hidden"></div>
             </div>
 
+            <!-- Top-Right Restart / Stop Game Button -->
+            <button
+              id="btn-restart-race"
+              class="hud-restart-btn"
+              type="button"
+              aria-label="Parar ou Reiniciar Jogo (Esc)"
+              title="Parar ou Reiniciar Jogo (Esc)"
+            >
+              <svg class="restart-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="1 4 1 10 7 10"></polyline>
+                <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+              </svg>
+              <span class="restart-btn-label">REINICIAR</span>
+            </button>
+
             <!-- Top-Right Mute / Unmute Sound Icon Button -->
             <button
               id="btn-mute-sound"
@@ -162,6 +177,28 @@
             <button id="btn-finish-autopilot" class="welcome-start-btn finish-action-btn finish-autopilot-btn" type="button">
               <span class="welcome-start-text">AUTO-PILOT</span>
               <kbd class="welcome-enter-kbd">P</kbd>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div id="race-pause-overlay" class="welcome-dialog-overlay hud-pause-overlay hidden" role="dialog" aria-labelledby="hud-pause-title">
+        <div class="welcome-dialog-card pause-dialog-card">
+          <div class="welcome-eyebrow">SUGAR RUSH · profdeborapaulo</div>
+          <h2 id="hud-pause-title" class="hud-finish-title hud-pause-title">JOGO PAUSADO</h2>
+          <p class="hud-pause-desc">Deseja reiniciar a corrida da largada, parar o jogo ou continuar?</p>
+          <div class="pause-actions-stack">
+            <button id="btn-pause-restart" class="welcome-start-btn finish-action-btn" type="button">
+              <span class="welcome-start-text">REINICIAR CORRIDA</span>
+              <kbd class="welcome-enter-kbd">R</kbd>
+            </button>
+            <button id="btn-pause-stop" class="welcome-start-btn finish-action-btn pause-stop-btn" type="button">
+              <span class="welcome-start-text">PARAR JOGO</span>
+              <kbd class="welcome-enter-kbd">MENU</kbd>
+            </button>
+            <button id="btn-pause-resume" class="welcome-start-btn finish-action-btn finish-autopilot-btn" type="button">
+              <span class="welcome-start-text">CONTINUAR</span>
+              <kbd class="welcome-enter-kbd">ESC</kbd>
             </button>
           </div>
         </div>

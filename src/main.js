@@ -2162,6 +2162,12 @@ async function initApp() {
   const elWelcomeProgressFill = document.getElementById('welcome-btn-progress-fill');
   const btnFinishRaceAgain = document.getElementById('btn-finish-race-again');
   const btnFinishAutopilot = document.getElementById('btn-finish-autopilot');
+  const btnRestartRace = document.getElementById('btn-restart-race');
+  const elPauseOverlay = document.getElementById('race-pause-overlay');
+  const btnPauseRestart = document.getElementById('btn-pause-restart');
+  const btnPauseStop = document.getElementById('btn-pause-stop');
+  const btnPauseResume = document.getElementById('btn-pause-resume');
+  let isRacePaused = false;
 
   function focusWelcomeStartButton() {
     if (isScreenshotMode) return;
@@ -2298,7 +2304,9 @@ async function initApp() {
       elWelcomeOverlay && !elWelcomeOverlay.classList.contains('hidden');
     const isFinishOpen =
       elFinishOverlay && !elFinishOverlay.classList.contains('hidden');
-    const shouldHide = Boolean(isWelcomeOpen || isFinishOpen);
+    const isPauseOpen =
+      elPauseOverlay && !elPauseOverlay.classList.contains('hidden');
+    const shouldHide = Boolean(isWelcomeOpen || isFinishOpen || isPauseOpen);
     elMobileTouchControls.classList.toggle('hidden', shouldHide);
     if (shouldHide) {
       releaseAllMobileTouchControls();
@@ -2408,7 +2416,82 @@ async function initApp() {
     });
   }
 
+  function setPauseState(paused) {
+    isRacePaused = Boolean(paused);
+    if (physics.setPaused) {
+      physics.setPaused(isRacePaused);
+    }
+    if (isRacePaused) {
+      releaseAllMobileTouchControls();
+      if (audioSynth.stopBackgroundMusic) {
+        audioSynth.stopBackgroundMusic();
+      }
+      if (elPauseOverlay) {
+        elPauseOverlay.classList.remove('hidden');
+      }
+      if (btnPauseRestart) {
+        try {
+          btnPauseRestart.focus({ preventScroll: true });
+        } catch (_e) {
+          // Ignore focus restrictions
+        }
+      }
+    } else if (elPauseOverlay) {
+      elPauseOverlay.classList.add('hidden');
+    }
+    syncMobileTouchControlsVisibility();
+  }
+
+  function openPauseRestartModal() {
+    if (isScreenshotMode) return;
+    hideWelcomeDialog();
+    hideFinishOverlay();
+    setPauseState(true);
+  }
+
+  function resumePausedRace() {
+    if (!isRacePaused) return;
+    setPauseState(false);
+    if (document.activeElement && typeof document.activeElement.blur === 'function') {
+      document.activeElement.blur();
+    }
+    const st = physics.state;
+    if (
+      !userExplicitlyMuted &&
+      st.raceClockActive &&
+      !st.countdownLocked &&
+      !st.raceFinished &&
+      !st.autopilot &&
+      !f1CountdownState.active &&
+      audioSynth.startBackgroundMusic
+    ) {
+      audioSynth.startBackgroundMusic({ reset: false });
+    }
+  }
+
+  function stopRaceToMenu() {
+    setPauseState(false);
+    hideFinishOverlay();
+    hideLapSplit();
+    cancelF1StartCountdown();
+    physics.setAutopilot(false);
+    const btnAutoText = document.getElementById('autopilot-btn-text');
+    if (btnAutoText) btnAutoText.textContent = 'Manual WASD Racing';
+    physics.resetToStart();
+    if (collectibles && collectibles.randomize) {
+      collectibles.randomize();
+    }
+    if (audioSynth.stopBackgroundMusic) {
+      audioSynth.stopBackgroundMusic();
+    }
+    if (document.activeElement && typeof document.activeElement.blur === 'function') {
+      document.activeElement.blur();
+    }
+    showWelcomeDialog();
+  }
+
   function dismissWelcomeAndStartRace() {
+    setPauseState(false);
     if (!userExplicitlyMuted && audioSynth.setEnabled) {
       if (!audioSynth.isEnabled?.()) {
         const on = audioSynth.setEnabled(true);
@@ -2516,6 +2599,43 @@ async function initApp() {
     });
   }
 
+  if (btnRestartRace) {
+    btnRestartRace.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (isRacePaused) {
+        resumePausedRace();
+      } else {
+        openPauseRestartModal();
+      }
+      btnRestartRace.blur();
+    });
+  }
+
+  if (btnPauseRestart) {
+    btnPauseRestart.addEventListener('click', (e) => {
+      e.stopPropagation();
+      dismissWelcomeAndStartRace();
+      btnPauseRestart.blur();
+    });
+  }
+
+  if (btnPauseStop) {
+    btnPauseStop.addEventListener('click', (e) => {
+      e.stopPropagation();
+      stopRaceToMenu();
+      btnPauseStop.blur();
+    });
+  }
+
+  if (btnPauseResume) {
+    btnPauseResume.addEventListener('click', (e) => {
+      e.stopPropagation();
+      resumePausedRace();
+      btnPauseResume.blur();
+    });
+  }
+
   if (btnFinishRaceAgain) {
     btnFinishRaceAgain.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -2527,6 +2647,7 @@ async function initApp() {
   if (btnFinishAutopilot) {
     btnFinishAutopilot.addEventListener('click', (e) => {
       e.stopPropagation();
+      setPauseState(false);
       hideWelcomeDialog();
       hideFinishOverlay();
       hideLapSplit();
@@ -2545,6 +2666,29 @@ async function initApp() {
   window.addEventListener('keydown', (e) => {
     if (e.target && ['INPUT', 'TEXTAREA'].includes(e.target.tagName) && !e.target.readOnly) return;
     if (e.repeat) return;
+
+    const isWelcomeOpen = elWelcomeOverlay && !elWelcomeOverlay.classList.contains('hidden');
+    const isFinishOpen = elFinishOverlay && !elFinishOverlay.classList.contains('hidden');
+
+    if (e.code === 'Escape') {
+      if (isRacePaused) {
+        e.preventDefault();
+        resumePausedRace();
+      } else if (!isWelcomeOpen && !isFinishOpen) {
+        e.preventDefault();
+        openPauseRestartModal();
+      }
+      return;
+    }
+
+    if (isRacePaused) {
+      if (e.code === 'Enter' || e.code === 'NumpadEnter' || e.key === 'Enter' || e.code === 'KeyR') {
+        e.preventDefault();
+        dismissWelcomeAndStartRace();
+      }
+      return;
+    }
+
     if (e.code === 'Enter' || e.code === 'NumpadEnter' || e.key === 'Enter') {
       e.preventDefault();
       dismissWelcomeAndStartRace();
@@ -2558,8 +2702,6 @@ async function initApp() {
     ) {
       hideWelcomeDialog();
     } else if (e.code === 'Space') {
-      const isWelcomeOpen = elWelcomeOverlay && !elWelcomeOverlay.classList.contains('hidden');
-      const isFinishOpen = elFinishOverlay && !elFinishOverlay.classList.contains('hidden');
       if (!isWelcomeOpen && !isFinishOpen) {
         e.preventDefault();
         triggerNitroBoost();
@@ -2879,20 +3021,23 @@ async function initApp() {
       (isScreenshotMode ? screenshotFrameCounter / 60 : clock.getElapsedTime()) +
       requestedTimeOffset;
 
-    // 0. Step Formula 1 5-Light Start Countdown if active
-    stepF1StartCountdown(isScreenshotMode ? 0.0 : dt);
+    let st = physics.state;
+    if (!isRacePaused) {
+      // 0. Step Formula 1 5-Light Start Countdown if active
+      stepF1StartCountdown(isScreenshotMode ? 0.0 : dt);
 
-    // 1. Step 60FPS Rapier3D + Banked Coaster Spline Physics
-    const st = physics.stepPhysics(dt);
+      // 1. Step 60FPS Rapier3D + Banked Coaster Spline Physics
+      st = physics.stepPhysics(dt);
 
-    // 2. Sync 1:87 Micro-Kart Transform, Wheels, Helmeted Driver & Drift Sparks
-    microKart.kartRoot.position.copy(st.position);
-    microKart.kartRoot.quaternion.copy(st.quaternion);
-    microKart.updateWheels(dt, st.speed, st.steerAngle);
-    microKart.updateKartVisuals(dt, st);
+      // 2. Sync 1:87 Micro-Kart Transform, Wheels, Helmeted Driver & Drift Sparks
+      microKart.kartRoot.position.copy(st.position);
+      microKart.kartRoot.quaternion.copy(st.quaternion);
+      microKart.updateWheels(dt, st.speed, st.steerAngle);
+      microKart.updateKartVisuals(dt, st);
 
-    // 2b. Update glowing track collectibles & check kart pickups (+50 pts & +25% nitro)
-    collectibles.update(dt, elapsedTime, st, handleCollectItem);
+      // 2b. Update glowing track collectibles & check kart pickups (+50 pts & +25% nitro)
+      collectibles.update(dt, elapsedTime, st, handleCollectItem);
+    }
 
     // 3. Update Warm Night-Time Lamp Key Lighting, Under-Track Orange/Purple/Blue LEDs & #1E6BFF Mic Aura
     atmosphere.updateAtmosphere(elapsedTime, settings, renderer, bloomPass, scene, diorama);
@@ -2970,6 +3115,7 @@ async function initApp() {
 
     // 5. Update WebAudio Synth, Race BGM & HUD
     if (
+      !isRacePaused &&
       st.raceClockActive &&
       !st.countdownLocked &&
       !st.raceFinished &&
@@ -2980,7 +3126,11 @@ async function initApp() {
     ) {
       audioSynth.startBackgroundMusic?.({ reset: true });
     }
-    audioSynth.update(st);
+    audioSynth.update(
+      isRacePaused
+        ? { ...st, speed: 0, lateralG: 0, isOnCurb: false, throttle: 0 }
+        : st
+    );
     updateHUD(st);
 
     if (isScreenshotMode) {

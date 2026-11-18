@@ -302,6 +302,7 @@ export async function createKartPhysicsController(splineData, manifest, roadGeo)
     downforceG: 1.0,
     autopilot: false, // Starts 100% in Manual Mode at 0.0 m/s!
     victoryCruise: false, // Celebratory AI cruise after completing 3 laps
+    paused: false,
     raceClockActive: false, // Starts ticking when F1 5-light countdown turns OFF (or when driving begins)
     countdownLocked: false, // Holds kart at starting grid while 5 F1 red lights count down
     wasCountdownLocked: false,
@@ -486,6 +487,7 @@ export async function createKartPhysicsController(splineData, manifest, roadGeo)
 
   function activateNitro() {
     if (
+      state.paused ||
       state.countdownLocked ||
       state.raceFinished ||
       state.autopilot ||
@@ -543,6 +545,7 @@ export async function createKartPhysicsController(splineData, manifest, roadGeo)
     window.addEventListener('keydown', (e) => {
       if (e.target && ['INPUT', 'TEXTAREA'].includes(e.target.tagName) && !e.target.readOnly) return;
       if (e.metaKey || e.ctrlKey || e.altKey) return;
+      if (state.paused) return;
       const code = e.code;
       if (code === 'KeyW' || code === 'ArrowUp') {
         kbKeys.forward = true;
@@ -1163,6 +1166,16 @@ export async function createKartPhysicsController(splineData, manifest, roadGeo)
     teleportToSector,
     resetToStart,
     setAutopilot,
+    setPaused: (nextPaused) => {
+      state.paused = Boolean(nextPaused);
+      if (state.paused) {
+        kbKeys.forward = false;
+        kbKeys.backward = false;
+        kbKeys.left = false;
+        kbKeys.right = false;
+        clearTouchKeys();
+      }
+    },
     setTouchKey,
     clearTouchKeys,
     notifyLightsOut,
